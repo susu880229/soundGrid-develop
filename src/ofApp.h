@@ -93,13 +93,19 @@ public:
     ofVideoPlayer soundWave;
     ofImage instruction;
     ofImage code;
-    ofImage planet_name;
+    ofImage planet_name[9];
     ofImage headline;
-    float pos_co;
-    float pos_cd;
-    float moveSpeed = 100;
-    float upSpeed = 40;
-    float c_r = 100;
+    ofImage radioWave;
+    ofImage frame;
+    ofImage front_grid;
+    ofImage front_glow;
+    ofImage ring;
+    ofImage star_back;
+    //float pos_co;
+    //float pos_cd;
+    //float moveSpeed = 100;
+    //float upSpeed = 40;
+    //float c_r = 100;
     bool wave = false;
     //bool show;
     bool up;
@@ -111,7 +117,6 @@ public:
     ofTrueTypeFont font;
     
     ofImage start;
-    ofImage front_glow;
     void drawDot();
     
     float startTime;

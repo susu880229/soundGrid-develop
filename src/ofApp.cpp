@@ -65,11 +65,15 @@ void ofApp::setup()
 
     // grid
     gridBG.load("sprites/gridBackground.png");
-    front_glow.load("sprites/Glow.png");
+    front_grid.load("sprites/front_grid.png");
+    front_glow.load("sprites/front_glow.png");
     headline.load("sprites/Headline.png");
     instruction.load("sprites/Instruction.png");
     code.load("sprites/Code.png");
-    
+    radioWave.load("sprites/Radiowave.png");
+    frame.load("sprites/Frame.png");
+    ring.load("sprites/Ring.png");
+    star_back.load("sprites/Stars.png");
     for(int i=0; i<NGRIDS; i++){
         grids[i].setup(i);
     }
@@ -97,6 +101,7 @@ void ofApp::setup()
     animation = false;
     for (int i = 0; i < 9; i++) {
         video[i].load("videos/" + to_string(i) + ".mp4");
+        planet_name[i].load("sprites/planets_name/" + to_string(i) + ".png");
     }
     //set currentposition = 4 to avoid show the first vedio at the beginning
     currentPosition = 4;
@@ -105,10 +110,11 @@ void ofApp::setup()
     probe.play();
     soundWave.load("videos/Soundwave.mp4");
     soundWave.play();
-    reset();
+    //reset();
    // show = false;
     up = false;
     timer = 0;
+    
     
 
 
@@ -204,6 +210,7 @@ void ofApp::update()
     probe.update();
     soundWave.update();
     //move and scale the planet video
+    /*
     if(pos_co < pos_cd)
     {
         pos_co += ofGetLastFrameTime() * moveSpeed;
@@ -214,6 +221,7 @@ void ofApp::update()
     {
         wave = true;
     }
+    */
     //update timer for flash instruction
     if(state == "play" && currentPosition == 4)
     {
@@ -300,17 +308,7 @@ void ofApp::drawGroundWindow (ofEventArgs & args)
         }
         */
         
-        //draw the grid
-        /*
-        ofSetColor(255,255,255);
-        ofFill();
-
-        ofDrawLine(382, 0, 382, ofGetWindowHeight());
-        ofDrawLine(641, 0, 641, ofGetWindowHeight());
-        ofDrawLine(0, 254, ofGetWindowWidth(), 254);
-        ofDrawLine(0, 513, ofGetWindowWidth(), 513);
-         */
-    }
+        }
     
 
     RectTracker& tracker = contourFinder.getTracker();
@@ -409,17 +407,18 @@ void ofApp::drawFrontWindow(ofEventArgs& args)
 
     //add animation part according to the currentposition
     ofBackground( 0, 0, 0, 128 );
+    star_back.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
     
     //before play state
-    probe.draw(350, 284, 100, 200);
-    gridBG.draw(799, 284, 200, 200);
-    headline.draw(270, 40, 540, 40);
-    //instruction.draw(290, 80, 500, 50 );
-    
+    frame.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
+    probe.draw(350, 314, 70, 140);
+    front_grid.draw(700, 284, 200, 200);
+    headline.draw(290, 95, 430, 40);
+    ring.draw(100, 284, 200, 200);
     //give player instruction to step on grid
     if(up == true)
     {
-        instruction.draw(290, 80, 500, 50 );
+        instruction.draw(300, 125, 400, 50 );
         
     }
     
@@ -434,19 +433,21 @@ void ofApp::drawFrontWindow(ofEventArgs& args)
             
         }
         //put draw outside to avoid disppear
-        video[currentPosition].draw(50, pos_co, c_r, c_r);
-        front_glow.draw(799 + ((currentPosition % 3) * 200 / 3), 284 + (floor(currentPosition / 3) * 200 / 3) , 200 / 3, 200/ 3 );
-        if(wave == true && currentPosition != 4)
+        video[currentPosition].draw(100, 284, 200, 200);
+        planet_name[currentPosition].draw(150, 550, 100, 25);
+        front_glow.draw(700 + ((currentPosition % 3) * 200 / 3), 284 + (floor(currentPosition / 3) * 200 / 3) , 200 / 3, 200/ 3 );
+        if(currentPosition != 4)
         {
-            soundWave.draw(450, 334, 350, 100);
-            code.draw(370,600,450,100);
+            radioWave.draw(250, 284, 150, 200);
+            soundWave.draw(420, 334, 280, 100);
+            code.draw(350, 570, 420, 100);
         }
 
     }
     
     if(currentPosition == 4)
     {
-        front_glow.draw(799 + 200 / 3, 284 + 200 / 3, 200 / 3, 200 / 3);
+        front_glow.draw(700 + 200 / 3, 284 + 200 / 3, 200 / 3, 200 / 3);
         
     }
     
@@ -494,7 +495,7 @@ void ofApp::blinkTimer()
     {
         timer -= ofGetLastFrameTime() * 10;
     }
-    ofLogNotice() << timer << endl;
+    //ofLogNotice() << timer << endl;
 }
 
 //--------------------------------------------------------------
@@ -659,7 +660,7 @@ void ofApp::checkPoint(ofVec2f point)
             }
             stopSound();
             animation = false;
-            reset();
+            //reset();
 
             // New timer when jump into another different grid
         } else if (originalPosition != currentPosition) {
@@ -667,7 +668,7 @@ void ofApp::checkPoint(ofVec2f point)
             startTime = ofGetElapsedTimef();
             originalPosition = currentPosition;
             animation = false;
-            reset();
+            //reset();
 
             // Still there
         } else if (originalPosition == currentPosition) {
@@ -700,6 +701,7 @@ void ofApp::stopSound()
         }
     }
 }
+/*
 void ofApp::reset()
 {
     pos_co = 0;
@@ -707,4 +709,5 @@ void ofApp::reset()
     c_r = 100;
     wave = false;
 }
+ */
 
