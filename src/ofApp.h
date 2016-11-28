@@ -101,18 +101,16 @@ public:
     ofImage front_glow;
     ofImage ring;
     ofImage star_back;
+    ofImage dot[41];
     //float pos_co;
     //float pos_cd;
     //float moveSpeed = 100;
     //float upSpeed = 40;
     //float c_r = 100;
     bool wave = false;
-    //bool show;
     bool up;
-    void reset();
     void blinkTimer();
-    //float blink_dt;
-    //float blink_start;
+    int dotCur;
     float timer;
     ofTrueTypeFont font;
     

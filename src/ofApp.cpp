@@ -69,11 +69,15 @@ void ofApp::setup()
     front_glow.load("sprites/front_glow.png");
     headline.load("sprites/Headline.png");
     instruction.load("sprites/Instruction.png");
-    code.load("sprites/Code.png");
+    code.load("sprites/ProbeCode.png");
     radioWave.load("sprites/Radiowave.png");
     frame.load("sprites/Frame.png");
     ring.load("sprites/Ring.png");
     star_back.load("sprites/Stars.png");
+    for (int i = 0; i < 41; i++)
+    {
+        dot[i].load("sprites/dot/" + to_string(i) + ".png");
+    }
     for(int i=0; i<NGRIDS; i++){
         grids[i].setup(i);
     }
@@ -114,7 +118,7 @@ void ofApp::setup()
    // show = false;
     up = false;
     timer = 0;
-    
+    dotCur = 0;
     
 
 
@@ -236,6 +240,26 @@ void ofApp::update()
     if(currentPosition != 4)
     {
         up = false;
+    }
+    // update dot animation
+    if(state == "play" && currentPosition != 4)
+    {
+        if(currentPosition != originalPosition)
+        {
+            dotCur = 0;
+        }
+        else if(currentPosition == originalPosition)
+        {
+            if(dotCur < 40)
+            {
+                dotCur++;
+
+            }
+            else
+            {
+                dotCur = 0;
+            }
+        }
     }
 
 }
@@ -440,7 +464,14 @@ void ofApp::drawFrontWindow(ofEventArgs& args)
         {
             radioWave.draw(250, 284, 150, 200);
             soundWave.draw(420, 334, 280, 100);
-            code.draw(350, 570, 420, 100);
+            
+            code.draw(375, 553, 410, 86);
+            //code.draw(0,0, ofGetWindowWidth(), ofGetWindowHeight());
+            //draw the dot here
+            dot[dotCur].draw(0,0,ofGetWindowWidth(), ofGetWindowHeight());
+
+            
+            
         }
 
     }
@@ -454,24 +485,6 @@ void ofApp::drawFrontWindow(ofEventArgs& args)
     
     
     
-    
-    
-    
-    //draw has to be outside of condition otherwise only static pictures
-
-    //draw vedio
-    /*
-    ofBackground( 0, 0 , 0, 128);
-    video[currentPosition].draw((currentPosition % 3) * (ofGetWindowWidth() / 3) + 50, floor(currentPosition / 3) * (ofGetWindowHeight() / 3) + 20);
-    //draw lines
-
-    ofSetColor(255,255,255);
-    ofFill();
-    ofDrawLine(0, ofGetWindowHeight() / 3, ofGetWindowWidth(), ofGetWindowHeight() / 3);
-    ofDrawLine(0, (ofGetWindowHeight() / 3) * 2, ofGetWindowWidth(), (ofGetWindowHeight() / 3) * 2);
-    ofDrawLine(ofGetWindowWidth() / 3, 0, ofGetWindowWidth() / 3, ofGetWindowHeight());
-    ofDrawLine((ofGetWindowWidth() / 3) * 2, 0, (ofGetWindowWidth() / 3) * 2, ofGetWindowHeight());
-     */
 }
 
 //not put any local varible to time, will cause problem
@@ -497,6 +510,8 @@ void ofApp::blinkTimer()
     }
     //ofLogNotice() << timer << endl;
 }
+
+
 
 //--------------------------------------------------------------
 void ofApp::exit()
@@ -701,13 +716,4 @@ void ofApp::stopSound()
         }
     }
 }
-/*
-void ofApp::reset()
-{
-    pos_co = 0;
-    pos_cd = 284;
-    c_r = 100;
-    wave = false;
-}
- */
 
